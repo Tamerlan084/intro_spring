@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+ 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <bean id="App" class="kz.zhabassov.intro.A" depends-on="C,B">
+        <property name="className" value="A"/>
+    </bean>
+    <bean id="B" class="kz.zhabassov.intro.B"  parent="App">
+        <property name="parentBeanName" value="App"/>
+        <property name="className" value="B"/>
+    </bean>
+
+    <bean id="C" class="kz.zhabassov.intro.C" parent="App" depends-on="E,D">
+        <property name="parentBeanName" value="App"/>
+        <property name="className" value="C"/>
+    </bean>
+
+    <bean id="D" class="kz.zhabassov.intro.D" parent="C">
+        <property name="parentBeanName" value="C"/>
+        <property name="className" value="D"/>
+    </bean>
+
+    <bean id="E" class="kz.zhabassov.intro.E" parent="C">
+        <property name="parentBeanName" value="C"/>
+        <property name="className" value="E"/>
+     </bean>
+    <bean id="childBeansA">
+        <util:list>
+            <ref bean="B"/>
+            <ref bean="C"/>
+        </util:list>
+    </bean>
+    <bean id="childBeansC">
+        <util:list>
+            <ref bean="D"/>
+            <ref bean="E"/>
+        </util:list>
+    </bean>
+    <bean id="consoleLogger" class="kz.zhabassov.intro.ConsoleLogger"/>
+    
+    <bean id="fileLogger" class="kz.zhabassov.intro.FileLogger">
+        <constructor-arg value="C:/Users/Lenovo/Downloads/intro/log/log.txt"/>
+    </bean>
+ <bean id="logger">
+     <util:list id="loggerList">
+         <ref bean="consoleLogger"/>
+         <ref bean="fileLogger"/>
+     </util:list>
+ </bean>
+</beans>
